@@ -15,7 +15,7 @@ export async function getAllProducts(req, res) {
 }
 
 export async function getById(req, res) {
-    let { id } = req;
+    let { id } = req.params;
     if (!mongoose.isValidObjectId(id))
         return res.status(400).json({ "title": "invalid id", message: " id is not in correct format " })
     try {
@@ -30,7 +30,7 @@ export async function getById(req, res) {
     }
 }
 export async function deleteById(req, res) {
-    let { id } = req;
+    let { id } = req.params;
     if (!mongoose.isValidObjectId(id))
         return res.status(400).json({ "title": "invalid id", message: " id is not in correct format " })
     try {
@@ -45,14 +45,15 @@ export async function deleteById(req, res) {
     }
 }
 export async function update(req, res) {
-    let { id, body } = req;
+    let { body } = req;
+    let { id } = req.params;
     if (!mongoose.isValidObjectId(id))
         return res.status(400).json({ "title": "invalid id", message: " id is not in correct format " })
     if (body.productName?.length <= 2)
         return res.status(400).json({ title: "cannot update product", message: "name is too short" })
     if (body.price < 0)
         return res.status(400).json({ title: "cannot update product", message: "price must be more than 0" })
-    if (new Date(body.ProductionDate) > new Date()) 
+    if (body.ProductionDate && new Date(body.ProductionDate) > new Date()) 
         return res.status(400).json({ title: "cannot update product", message: "productionDate must not be after today" });
     try {
         let data = await productModel.findByIdAndUpdate(id, req.body, { new: true });
@@ -68,8 +69,10 @@ export async function add(req, res) {
     let { body } = req;
     if(!body.productName || !body.price)
         return res.status(400).json({title: "cannot add product", message: "productName and price are required"})
-    if (body.name.length <= 2)
+    if (body.productName?.length <= 2)
         return res.status(400).json({ title: "cannot add product", message: "name is too short" })
+    if (body.ProductionDate && new Date(body.ProductionDate) > new Date()) 
+        return res.status(400).json({ title: "cannot update product", message: "productionDate must not be after today" });
     try {
 
         let newProduct = new productModel(body);

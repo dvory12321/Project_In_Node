@@ -15,7 +15,7 @@ export async function getAllCustomers(req, res) {
 }
 
 export async function getById(req, res) {
-    let { id } = req;
+    let { id } = req.params;
     if (!mongoose.isValidObjectId(id))
         return res.status(400).json({ "title": "invalid id", message: " id is not in correct format " })
     try {
@@ -30,7 +30,7 @@ export async function getById(req, res) {
     }
 }
 export async function deleteById(req, res) {
-    let { id } = req;
+    let { id } = req.params;
     if (!mongoose.isValidObjectId(id))
         return res.status(400).json({ "title": "invalid id", message: " id is not in correct format " })
     try {
@@ -45,7 +45,8 @@ export async function deleteById(req, res) {
     }
 }
 export async function update(req, res) {
-    let { id, body } = req;
+    let {id} = req.params
+    let { body } = req;
     if (!mongoose.isValidObjectId(id))
         return res.status(400).json({ "title": "invalid id", message: " id is not in correct format " })
     if (body.name?.length <= 2)

@@ -12,7 +12,7 @@ dotenv.config();
 
 app.use(express.json());
 
-app.use("/roducts", productRouter)
+app.use("/products", productRouter)
 app.use("/customers", customerRouter)
 // app.use("/buyings", buyingRouter)
 
