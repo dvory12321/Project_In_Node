@@ -12,8 +12,8 @@ dotenv.config();
 
 app.use(express.json());
 
-app.use("/products", productRouter)
-app.use("/customers", customerRouter)
+app.use("/api/products", productRouter)
+app.use("/api/customers", customerRouter)
 // app.use("/buyings", buyingRouter)
 
 const port = process.env.PORT;
