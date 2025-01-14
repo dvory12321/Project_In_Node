@@ -10,7 +10,7 @@ export async function getAllCustomers(req, res) {
         res.json(data)
     }
     catch (err) {
-        res.status(400).json({ title: "acnoot get all customer", message: err.message })
+        res.status(400).json({ title: "cannot get all customer", message: err.message })
     }
 }
 
@@ -26,7 +26,7 @@ export async function getById(req, res) {
         res.json(data)
     }
     catch (err) {
-        res.status(400).json({ title: "acnoot get by id", message: err.message })
+        res.status(400).json({ title: "cannot get by id", message: err.message })
     }
 }
 export async function deleteById(req, res) {
@@ -41,7 +41,7 @@ export async function deleteById(req, res) {
         res.json(data)
     }
     catch (err) {
-        res.status(400).json({ title: "acnoot delete customer", message: err.message })
+        res.status(400).json({ title: "cannot delete customer", message: err.message })
     }
 }
 export async function update(req, res) {
@@ -49,7 +49,7 @@ export async function update(req, res) {
     if (!mongoose.isValidObjectId(id))
         return res.status(400).json({ "title": "invalid id", message: " id is not in correct format " })
     if (body.name?.length <= 2)
-        return res.status(400).json({ title: "acnoot update customer", message: "name is too short" })
+        return res.status(400).json({ title: "cannot update customer", message: "name is too short" })
     try {
 
         let data = await customerModel.findByIdAndUpdate(id, req.body, { new: true });
@@ -58,15 +58,15 @@ export async function update(req, res) {
         res.json(data)
     }
     catch (err) {
-        res.status(400).json({ title: "acnoot update customer", message: err.message })
+        res.status(400).json({ title: "cannot update customer", message: err.message })
     }
 }
 export async function add(req, res) {
     let { body } = req;
-    if (!body.name || !body.phone)
-        return res.status(400).json({ title: "missing required fields", message: "name and adress are required" })
-    if (body.name.length <= 2)
-        return res.status(400).json({ title: "acnoot update customer", message: "name is too short" })
+    if (!body.firstName || !body.phone)
+        return res.status(400).json({ title: "missing required fields", message: "name and phone are required" })
+    if (body.firstName?.length <= 2)
+        return res.status(400).json({ title: "cannot update customer", message: "name is too short" })
     try {
 
         let newCustomer = new customerModel(body);
@@ -75,7 +75,7 @@ export async function add(req, res) {
         res.json(data)
     }
     catch (err) {
-        res.status(400).json({ title: "acnoot add customer", message: err.message })
+        res.status(400).json({ title: "cannot add customer", message: err.message })
     }
 
 
