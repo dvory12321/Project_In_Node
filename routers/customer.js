@@ -10,7 +10,7 @@ router.get("/:id", getById);
 router.put("/:id", update);
 router.post("/", add);
 router.put("/:id",updatePassword)
-app.post('/login', login);
+router.post('/login', login);
 
 
 export default router;

@@ -15,12 +15,12 @@ export async function getAllCustomers(req, res) {
 }
 
 export async function getById(req, res) {
-    let { _id } = req.params;
-    if (!mongoose.isValidObjectId(_id))
+    let { id } = req.params;
+    if (!mongoose.isValidObjectId(id))
         return res.status(400).json({ "title": "invalid id", message: " id is not in correct format " })
     try {
 
-        let data = await customerModel.findById(_id);
+        let data = await customerModel.findById(id);
         if (!data)
             return res.status(404).json({ "title": "cannot get by id", message: " no customer with such id found " })
         res.json(data)
@@ -31,9 +31,9 @@ export async function getById(req, res) {
 }
 
 export async function update(req, res) {
-    let {_id} = req.params
+    let {id} = req.params
     let { body } = req;
-    if (!mongoose.isValidObjectId(_id))
+    if (!mongoose.isValidObjectId(id))
         return res.status(400).json({ "title": "invalid id", message: " id is not in correct format " })
     const { password, ...updateData } = body;
     if (body.uzerName?.length <= 2)
@@ -42,7 +42,7 @@ export async function update(req, res) {
         return res.status(400).json({ title: "cannot update product", message: "productionDate must not be after today" });
     try {
 
-        let data = await customerModel.findByIdAndUpdate(_id, req.body, { new: true });
+        let data = await customerModel.findByIdAndUpdate(id, req.body, { new: true });
         if (!data)
             return res.status(404).json({ "title": "cannot update by id", message: " no customer with such id found " })
         res.json(data)
@@ -70,10 +70,10 @@ export async function add(req, res) {
 }
 
 export async function updatePassword(req, res) {
-    let { _id } = req.params;
+    let { id } = req.params;
     let { body } = req;
     
-    if (!mongoose.isValidObjectId(_id))
+    if (!mongoose.isValidObjectId(id))
         return res.status(400).json({ "title": "invalid id", message: "id is not in correct format" });
 
     if (!body.password || body.password.length < 6) {
@@ -81,7 +81,7 @@ export async function updatePassword(req, res) {
     }
 
     try {
-        let data = await customerModel.findByIdAndUpdate(_id, { password: body.password }, { new: true });
+        let data = await customerModel.findByIdAndUpdate(id, { password: body.password }, { new: true });
 
         if (!data)
             return res.status(404).json({ "title": "cannot update by id", message: "no customer with such id found" });
