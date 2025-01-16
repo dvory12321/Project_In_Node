@@ -9,8 +9,6 @@
   "type": "module",
   "scripts": {
     "start": "node app.js"
-  },
-  "engines": {
-        "node": ">= 0.4"
   }
+  
 }
