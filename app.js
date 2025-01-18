@@ -16,8 +16,8 @@ app.use("/api/products", productRouter)
 app.use("/api/customers", customerRouter)
 app.use("/api/orders", orderRouter)
 
-const port = process.env.PORT;
-app.listen(port, "localhost", ()=>{
+const port = process.env.PORT || 10000;
+app.listen(port, "0.0.0.0", ()=>{
     console.log("app is running in port " + port)
 })
 
