@@ -16,7 +16,6 @@ const orderSchema = new Schema({
     address: String, 
     cust_id: {type: Types.ObjectId, ref: "customer"},
     products: [minimalProductSchema],
-    /*products_id: [{type: Types.ObjectId, ref: "product"}],*/
     isInWay: {type: Boolean, default: false},
     priceToShipment: {type:Number, default: 100},
     finallyPrice: Number
