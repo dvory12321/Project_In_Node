@@ -8,7 +8,7 @@
   },
   "type": "module",
   "scripts": {
-    "start": "node app.js"
+    "start": "node app"
   },
   "engines": {
     "node": "22.12.0"
