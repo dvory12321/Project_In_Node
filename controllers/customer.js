@@ -53,19 +53,35 @@ export async function update(req, res) {
 }
 export async function add(req, res) {
     let { body } = req;
+
     if (!body.uzerName || !body.email)
-        return res.status(400).json({ title: "missing required fields", message: "name and phone are required" })
+        return res.status(400).json({ title: "missing required fields", message: "name and email are required" });
+
     if (body.uzerName?.length <= 2)
-        return res.status(400).json({ title: "cannot update customer", message: "name is too short" })
-    try {
+        return res.status(400).json({ title: "cannot add customer", message: "name is too short" });
 
-        let newCustomer = new customerModel(body);
-        let data = await newCustomer.save();
-
-        res.json(data)
+    // בדיקה אם המייל תקני
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(body.email)) {
+        return res.status(400).json({ title: "invalid email", message: "Email is not in a valid format" });
     }
-    catch (err) {
-        res.status(400).json({ title: "cannot add customer", message: err.message })
+
+    // הוספת תאריך ההוספה
+    const today = new Date();
+
+    try {
+        // יצירת לקוח חדש עם המידע כולל תאריך ההוספה
+        let newCustomer = new customerModel({
+            ...body,
+            createdAt: today, // שמירת תאריך ההוספה
+            updatedAt: today  // עדכון תאריך עדכון אם יש צורך
+        });
+
+        let data = await newCustomer.save();
+        res.json(data);
+
+    } catch (err) {
+        res.status(400).json({ title: "cannot add customer", message: err.message });
     }
 }
 
