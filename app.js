@@ -1,5 +1,6 @@
 import express from "express"
 import dotenv from "dotenv"
+import cors from 'cors'
 
 import {connectToDB} from "./config/DB.js"
 import customerRouter from "./routers/customer.js"
@@ -10,7 +11,9 @@ const app = express();
 connectToDB();
 dotenv.config();
 
+app.use(cors())
 app.use(express.json());
+
 
 app.use("/api/products", productRouter)
 app.use("/api/customers", customerRouter)
