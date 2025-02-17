@@ -7,7 +7,7 @@ export async function getAllProducts(req, res) {
     try {
 
         let data = await productModel.find();
-        res.json({ title: "all products", data })
+        res.json(data)
     }
     catch (err) {
         console.log(err);
