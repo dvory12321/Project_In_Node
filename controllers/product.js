@@ -10,6 +10,7 @@ export async function getAllProducts(req, res) {
         res.json({ title: "all products", data })
     }
     catch (err) {
+        console.log(err);
         res.status(400).json({ title: "cannot get all products", message: err.message })
     }
 }
