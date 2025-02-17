@@ -74,6 +74,8 @@ export async function update(req, res) {
 }
 export async function add(req, res) {
     let { body } = req;
+    console.log(body);
+    
     if(!body.productName || !body.price)
         return res.status(400).json({title: "cannot add product", message: "productName and price are required"})
     if (body.productName?.length <= 2)
@@ -90,7 +92,6 @@ export async function add(req, res) {
 
         let newProduct = new productModel(body);
         let data = await newProduct.save();
-
         res.json(data)
     }
     catch (err) {
