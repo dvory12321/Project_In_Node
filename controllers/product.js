@@ -55,6 +55,12 @@ export async function update(req, res) {
         return res.status(400).json({ title: "cannot update product", message: "price must be more than 0" })
     if (body.ProductionDate && new Date(body.ProductionDate) > new Date()) 
         return res.status(400).json({ title: "cannot update product", message: "productionDate must not be after today" });
+    if(body.price < 0)
+        return res.status(400).json({title: "cannot add product", message: "price must be more than 0"})
+    if(body.color && body.color.length < 3)
+        return res.status(400).json({title: "cannot add product", message: "color must be more than 3 characters"})
+    if(body.size && body.size.length < 3)
+        return res.status(400).json({title: "cannot add product", message: "size must be more than 3 characters"})
     try {
         let data = await productModel.findByIdAndUpdate(id, req.body, { new: true });
         if (!data)
@@ -73,6 +79,12 @@ export async function add(req, res) {
         return res.status(400).json({ title: "cannot add product", message: "name is too short" })
     if (body.ProductionDate && new Date(body.ProductionDate) > new Date()) 
         return res.status(400).json({ title: "cannot update product", message: "productionDate must not be after today" });
+    if(body.price < 0)
+        return res.status(400).json({title: "cannot add product", message: "price must be more than 0"})
+    if(body.color && body.color.length < 3)
+        return res.status(400).json({title: "cannot add product", message: "color must be more than 3 characters"})
+    if(body.size && body.size.length < 3)
+        return res.status(400).json({title: "cannot add product", message: "size must be more than 3 characters"})
     try {
 
         let newProduct = new productModel(body);
