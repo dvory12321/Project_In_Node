@@ -103,7 +103,7 @@ export async function getCategory(req, res) {
     console.log("category: " + category);
     try {
         let data = await productModel.find
-            ({ category: { $in: [category] } });
+            ({ categories: { $in: [category] } });
         res.json(data)
     }
     catch (err) {
