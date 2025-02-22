@@ -96,7 +96,18 @@ export async function add(req, res) {
     }
     catch (err) {
         res.status(400).json({ title: "cannot add product", message: err.message })
+    }}
+
+export async function getCategory(req, res) {
+    let { category } = req.params;
+    console.log("category: " + category);
+    try {
+        let data = await productModel.find
+            ({ category: { $in: [category] } });
+        res.json(data)
     }
-
-
+    catch (err) {
+        res.status(400).json({ title: "cannot get by category", message: err.message })
+    }
 }
+
