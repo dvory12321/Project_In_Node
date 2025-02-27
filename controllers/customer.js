@@ -137,7 +137,7 @@ export async function signUp(req, res) {
 
     let { body } = req;
     if (!body.password || !body.userName || !body.email || !body.phone)
-        return res.status(404).json({ title: "missing ", message: "userName passworrd phone email are required" })
+        return res.status(404).json({ title: "missing ", message: "signUp - userName passworrd phone email are required" })
     try {
         let newCustomer = new customerModel(body);
         await newCustomer.save()
