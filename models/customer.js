@@ -7,7 +7,7 @@ const customerSchema = new Schema({
     phone : String,
     role: {
         type: String,
-        default: 'uzer' 
+        default: 'user' 
     },
     RegistrationDate : Date
 });
