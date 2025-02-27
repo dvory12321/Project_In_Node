@@ -4,6 +4,7 @@ const customerSchema = new Schema({
     uzerName: String,
     email: String,
     password : String,
+    phone : String,
     role: {
         type: String,
         default: 'uzer' 

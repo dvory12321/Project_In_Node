@@ -133,4 +133,19 @@ export async function login(req, res) {
         res.status(500).json({ title: "server error", message: err.message });
     }
 }
+export async function signUp(req, res) {
+
+    let { body } = req;
+    if (!body.password || !body.userName || !body.email || !body.phone)
+        return res.status(404).json({ title: "missing ", message: "userName passworrd phone email are required" })
+    try {
+        let newCustomer = new customerModel(body);
+        await newCustomer.save()
+        // let t=generateToken(newCustomer);
+        return res.json({_id:newCustomer._id,userName:newCustomer.userName,email:newCustomer.email,phone:newCustomer.phone});
+    }
+    catch (err) {
+        res.status(400).json({ title: "cannot users", message: err.message })
+    }
+}
 
