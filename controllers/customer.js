@@ -32,27 +32,61 @@ export async function getById(req, res) {
 }
 
 
-export async function update(req, res) {
-    let {id} = req.params
-    let { body } = req;
-    if (!mongoose.isValidObjectId(id))
-        return res.status(400).json({ "title": "invalid id", message: " id is not in correct format " })
-    const { password, ...updateData } = body;
-    if (body.uzerName?.length <= 2)
-        return res.status(400).json({ title: "cannot update customer", message: "name is too short" })
-    if (body.RegistrationDate && new Date(body.RegistrationDate) > new Date()) 
-        return res.status(400).json({ title: "cannot update product", message: "productionDate must not be after today" });
-    try {
+// export async function update(req, res) {
+//     let {id} = req.params
+//     let { body } = req;
+//     if (!mongoose.isValidObjectId(id))
+//         return res.status(400).json({ "title": "invalid id", message: " id is not in correct format " })
+//     const { password, ...updateData } = body;
+//     if (body.uzerName?.length <= 2)
+//         return res.status(400).json({ title: "cannot update customer", message: "name is too short" })
+//     if (body.RegistrationDate && new Date(body.RegistrationDate) > new Date()) 
+//         return res.status(400).json({ title: "cannot update product", message: "productionDate must not be after today" });
+//     try {
 
-        let data = await customerModel.findByIdAndUpdate(id, req.body, { new: true });
+//         let data = await customerModel.findByIdAndUpdate(id, req.body, { new: true });
+//         if (!data)
+//             return res.status(404).json({ "title": "cannot update by id", message: " no customer with such id found " })
+//         res.json(data)
+//     }
+//     catch (err) {
+//         res.status(400).json({ title: "cannot update customer", message: err.message })
+//     }
+// }
+export async function update(req, res) {
+    let { id } = req.params;
+    let { body } = req;
+
+    // בדיקה האם ה-ID תקין
+    if (!mongoose.isValidObjectId(id))
+        return res.status(400).json({ "title": "invalid id", message: "id is not in correct format" });
+
+    // הוצאת שדה הסיסמה כדי לא לעדכן אותו
+    const { password, ...updateData } = body;
+
+    // בדיקה אם שם המשתמש קצר מדי
+    if (body.userName?.length <= 2)
+        return res.status(400).json({ title: "cannot update customer", message: "name is too short" });
+
+    // בדיקה אם תאריך ההרשמה גדול מהיום הנוכחי
+    if (body.RegistrationDate && new Date(body.RegistrationDate) > new Date()) 
+        return res.status(400).json({ title: "cannot update customer", message: "RegistrationDate must not be after today" });
+
+    try {
+        // ביצוע העדכון עם הנתונים המסוננים
+        let data = await customerModel.findByIdAndUpdate(id, updateData, { new: true });
+
+        // אם לא נמצא לקוח עם ה-ID הנתון
         if (!data)
-            return res.status(404).json({ "title": "cannot update by id", message: " no customer with such id found " })
-        res.json(data)
+            return res.status(404).json({ "title": "cannot update by id", message: "no customer with such id found" });
+
+        res.json(data);
     }
     catch (err) {
-        res.status(400).json({ title: "cannot update customer", message: err.message })
+        res.status(400).json({ title: "cannot update customer", message: err.message });
     }
 }
+
 export async function add(req, res) {
     let { body } = req;
 
