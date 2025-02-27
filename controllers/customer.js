@@ -170,7 +170,6 @@ export async function login(req, res) {
 export async function signUp(req, res) {
 
     let { body } = req;
-    console.log(body);
     if (!body.password || !body.userName || !body.email || !body.phone)
         return res.status(404).json({ title: "missing ", message: "signUp - userName passworrd phone email are required" })
     try {
