@@ -38,10 +38,11 @@ export async function getById(req, res) {
 //     if (!mongoose.isValidObjectId(id))
 //         return res.status(400).json({ "title": "invalid id", message: " id is not in correct format " })
 //     const { password, ...updateData } = body;
-//     if (body.uzerName?.length <= 2)
+//     if (body.userName?.length <= 2)
 //         return res.status(400).json({ title: "cannot update customer", message: "name is too short" })
 //     if (body.RegistrationDate && new Date(body.RegistrationDate) > new Date()) 
-//         return res.status(400).json({ title: "cannot update product", message: "productionDate must not be after today" });
+//         return res.status(400).json({ title: "cannot update customer", message: "RegistrationDate must not be after today" });
+
 //     try {
 
 //         let data = await customerModel.findByIdAndUpdate(id, req.body, { new: true });
