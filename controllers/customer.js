@@ -5,30 +5,32 @@ import { customerModel } from "../models/customer.js";
 
 export async function getAllCustomers(req, res) {
     try {
-
-        let data = await customerModel.find();
-        res.json(data)
-    }
-    catch (err) {
-        res.status(400).json({ title: "cannot get all customer", message: err.message })
+        let data = await customerModel.find().select('-password'); 
+        res.json(data);
+    } catch (err) {
+        res.status(400).json({ title: "cannot get all customers", message: err.message });
     }
 }
+
 
 export async function getById(req, res) {
     let { id } = req.params;
-    if (!mongoose.isValidObjectId(id))
-        return res.status(400).json({ "title": "invalid id", message: " id is not in correct format " })
-    try {
 
-        let data = await customerModel.findById(id);
+    if (!mongoose.isValidObjectId(id))
+        return res.status(400).json({ title: "invalid id", message: "id is not in correct format" });
+
+    try {
+        let data = await customerModel.findById(id).select('-password'); 
+
         if (!data)
-            return res.status(404).json({ "title": "cannot get by id", message: " no customer with such id found " })
-        res.json(data)
-    }
-    catch (err) {
-        res.status(400).json({ title: "cannot get by id", message: err.message })
+            return res.status(404).json({ title: "cannot get by id", message: "no customer with such id found" });
+
+        res.json(data);
+    } catch (err) {
+        res.status(400).json({ title: "cannot get by id", message: err.message });
     }
 }
+
 
 export async function update(req, res) {
     let {id} = req.params
