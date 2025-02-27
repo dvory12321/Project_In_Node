@@ -90,10 +90,10 @@ export async function update(req, res) {
 export async function add(req, res) {
     let { body } = req;
 
-    if (!body.uzerName || !body.email)
+    if (!body.userName || !body.email)
         return res.status(400).json({ title: "missing required fields", message: "name and email are required" });
 
-    if (body.uzerName?.length <= 2)
+    if (body.userName?.length <= 2)
         return res.status(400).json({ title: "cannot add customer", message: "name is too short" });
 
     // בדיקה אם המייל תקני
@@ -145,20 +145,20 @@ export async function updatePassword(req, res) {
 }
 
 export async function login(req, res) {
-    const { uzerName, password } = req.body; 
-    if (!uzerName || !password) {
+    const { userName, password } = req.body; 
+    if (!userName || !password) {
         return res.status(400).json({ title: "missing fields", message: "Username and password are required" });
     }
 
     try {
-        const user = await customerModel.findOne({ uzerName });
+        const user = await customerModel.findOne({ userName });
 
         if (!user) {
             return res.status(404).json({ title: "user not found", message: "No user with such username found" });
         }
 
         if (user.password === password) {
-            res.json({ message: "Login successful", user: { uzerName: user.uzerName, email: user.email, role: user.role } });
+            res.json({ message: "Login successful", user: { userName: user.userName, email: user.email, role: user.role } });
         } else {
             res.status(401).json({ title: "invalid password", message: "The password is incorrect" });
         }
@@ -170,6 +170,7 @@ export async function login(req, res) {
 export async function signUp(req, res) {
 
     let { body } = req;
+    console.log(body);
     if (!body.password || !body.userName || !body.email || !body.phone)
         return res.status(404).json({ title: "missing ", message: "signUp - userName passworrd phone email are required" })
     try {
