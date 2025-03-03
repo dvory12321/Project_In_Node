@@ -9,7 +9,10 @@ const customerSchema = new Schema({
         type: String,
         default: 'user' 
     },
-    RegistrationDate : Date
+    RegistrationDate :{
+        type: Date,
+        default: Date.now 
+    }
 });
 
 export const customerModel = model("customer", customerSchema);
