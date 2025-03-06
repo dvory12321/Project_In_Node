@@ -157,16 +157,28 @@ export async function add(req, res) {
         res.status(400).json({ title: "cannot add product", message: err.message })
     }}
 
-export async function getCategory(req, res) {
-    let { category } = req.params;
-    console.log("category: " + category);
-    try {
-        let data = await productModel.find
-            ({ categories: { $in: [category] } });
-        res.json(data)
+    export async function getCategory(req, res) {
+        let { category } = req.params;
+        const page = parseInt(req.query.page) || 1;
+        const limit = parseInt(req.query.limit) || 8; 
+        const skip = (page - 1) * limit; 
+    
+        console.log("category: " + category);
+        try {
+            const products = await productModel.find({ categories: { $in: [category] } })
+                .skip(skip)
+                .limit(limit);
+    
+            const totalProducts = await productModel.countDocuments({ categories: { $in: [category] } }); // סך כל המוצרים בקטגוריה
+            const totalPages = Math.ceil(totalProducts / limit); // חישוב מספר הדפים
+    
+            res.json({
+                products,
+                totalPages
+            });
+        } catch (err) {
+            res.status(400).json({ title: "cannot get by category", message: err.message });
+        }
     }
-    catch (err) {
-        res.status(400).json({ title: "cannot get by category", message: err.message })
-    }
-}
+    
 
