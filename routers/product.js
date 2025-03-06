@@ -8,7 +8,7 @@ const router = Router();
 router.get("/", getAllProducts);
 router.get("/:id", getById);
 router.delete("/:id", deleteById);
-router.put("/:id", update);
+router.put("/:productName", update);
 router.post("/", add);
 router.get("/category/:category", getCategory);
 
