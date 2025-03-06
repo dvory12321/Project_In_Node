@@ -45,10 +45,46 @@ export async function deleteById(req, res) {
         res.status(400).json({ title: "cannot delete product", message: err.message })
     }
 }
+// export async function update(req, res) {
+//     let { body } = req;
+//     let { productName } = req.params;
+
+//     if (body.productName?.length <= 2)
+//         return res.status(400).json({ title: "cannot update product", message: "name is too short" });
+//     if (body.price < 0)
+//         return res.status(400).json({ title: "cannot update product", message: "price must be more than 0" });
+//     if (body.ProductionDate && new Date(body.ProductionDate) > new Date())
+//         return res.status(400).json({ title: "cannot update product", message: "productionDate must not be after today" });
+//     if (body.color && body.color.length < 3)
+//         return res.status(400).json({ title: "cannot update product", message: "color must be more than 3 characters" });
+//     if (body.size && body.size.length < 3)
+//         return res.status(400).json({ title: "cannot update product", message: "size must be more than 3 characters" });
+
+//     try {
+//         let product = await productModel.findOne({ productName: productName });
+
+//         if (!product)
+//             return res.status(404).json({ title: "product not found", message: "No product found with this name" });
+
+//         let updatedProduct = await productModel.findByIdAndUpdate(product._id, body, { new: true });
+
+//         if (!updatedProduct)
+//             return res.status(404).json({ title: "cannot update product", message: "No product found to update" });
+
+//         res.json(updatedProduct);
+//     } catch (err) {
+//         res.status(400).json({ title: "cannot update product", message: err.message });
+//     }
+// }
+
 export async function update(req, res) {
     let { body } = req;
     let { productName } = req.params;
 
+    // הדפסת שם המוצר שנשלח לבדיקת ערך תקין
+    console.log('Received productName:', productName);
+
+    // בדיקות שדות
     if (body.productName?.length <= 2)
         return res.status(400).json({ title: "cannot update product", message: "name is too short" });
     if (body.price < 0)
@@ -61,21 +97,30 @@ export async function update(req, res) {
         return res.status(400).json({ title: "cannot update product", message: "size must be more than 3 characters" });
 
     try {
-        let product = await productModel.findOne({ productName: productName });
+        // חיפוש גמיש על שם המוצר (לא רגיש לאותיות גדולות/קטנות)
+        let product = await productModel.findOne({ 
+            productName: { 
+                $regex: new RegExp('^' + productName.trim().toLowerCase() + '$', 'i') 
+            } 
+        });
 
         if (!product)
             return res.status(404).json({ title: "product not found", message: "No product found with this name" });
 
+        // עדכון המוצר
         let updatedProduct = await productModel.findByIdAndUpdate(product._id, body, { new: true });
 
         if (!updatedProduct)
             return res.status(404).json({ title: "cannot update product", message: "No product found to update" });
 
+        // החזרת המוצר המעודכן
         res.json(updatedProduct);
     } catch (err) {
+        // טיפול בשגיאות
         res.status(400).json({ title: "cannot update product", message: err.message });
     }
 }
+
 
 
 export async function add(req, res) {
