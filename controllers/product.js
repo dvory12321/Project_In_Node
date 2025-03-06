@@ -5,13 +5,21 @@ import { productModel } from "../models/product.js";
 
 export async function getAllProducts(req, res) {
     try {
+        const page = parseInt(req.query.page) || 1; 
+        const limit = parseInt(req.query.limit) || 8; 
+        const skip = (page - 1) * limit; // חישוב מקום התחלתי של המוצרים
 
-        let data = await productModel.find();
-        res.json(data)
-    }
-    catch (err) {
+        const products = await productModel.find().skip(skip).limit(limit);
+        const totalProducts = await productModel.countDocuments(); // סך כל המוצרים
+        const totalPages = Math.ceil(totalProducts / limit); // חישוב מספר הדפים
+
+        res.json({
+            products,
+            totalPages
+        });
+    } catch (err) {
         console.log(err);
-        res.status(400).json({ title: "cannot get all products", message: err.message })
+        res.status(400).json({ title: "cannot get all products", message: err.message });
     }
 }
 
