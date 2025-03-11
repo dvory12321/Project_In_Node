@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
-
+import bcrypt from "bcryptjs";
+import generateToken from "../generateToken.js";
 import { customerModel } from "../models/customer.js";
 
 
@@ -146,7 +147,8 @@ export async function updatePassword(req, res) {
 }
 
 export async function login(req, res) {
-    const { userName, password } = req.body; 
+    const { userName, password } = req.body;
+
     if (!userName || !password) {
         return res.status(400).json({ title: "missing fields", message: "Username and password are required" });
     }
@@ -158,29 +160,65 @@ export async function login(req, res) {
             return res.status(404).json({ title: "user not found", message: "No user with such username found" });
         }
 
-        if (user.password === password) {
-            res.json({ message: "Login successful", user: { userName: user.userName, email: user.email, role: user.role } });
-        } else {
-            res.status(401).json({ title: "invalid password", message: "The password is incorrect" });
+        // השוואת סיסמאות
+        const isMatch = await bcrypt.compare(password, user.password);
+        if (!isMatch) {
+            return res.status(401).json({ title: "invalid password", message: "Incorrect password" });
         }
+
+        // יצירת טוקן
+        const token = generateToken(user._id);
+
+        res.json({
+            _id: user._id,
+            userName: user.userName,
+            email: user.email,
+            role: user.role,
+            token, // שליחת הטוקן ללקוח
+        });
 
     } catch (err) {
         res.status(500).json({ title: "server error", message: err.message });
     }
 }
-export async function signUp(req, res) {
 
+
+export async function signUp(req, res) {
     let { body } = req;
+
     if (!body.password || !body.userName || !body.email || !body.phone)
-        return res.status(404).json({ title: "missing ", message: "signUp - userName passworrd phone email are required" })
+        return res.status(400).json({ title: "missing fields", message: "userName, password, phone, and email are required" });
+
     try {
-        let newCustomer = new customerModel(body);
-        await newCustomer.save()
-        // let t=generateToken(newCustomer);
-        return res.json({_id:newCustomer._id,userName:newCustomer.userName,email:newCustomer.email,phone:newCustomer.phone});
-    }
-    catch (err) {
-        res.status(400).json({ title: "cannot users", message: err.message })
+        // בדיקה אם המשתמש כבר קיים
+        const existingUser1 = await customerModel.findOne({ userName: body.userName });
+        const existingUser2 = await customerModel.findOne({ email: body.email });
+        const existingUser3 = await customerModel.findOne({ phone: body.phone });
+        if (existingUser1||existingUser2||existingUser3) {
+            return res.status(400).json({ title: "user exists", message: "User already exists" });
+        }
+
+        // הצפנת הסיסמה
+        const salt = await bcrypt.genSalt(10);
+        const hashedPassword = await bcrypt.hash(body.password, salt);
+
+        // יצירת משתמש חדש
+        let newCustomer = new customerModel({ ...body, password: hashedPassword });
+        await newCustomer.save();
+
+        // יצירת טוקן
+        const token = generateToken(newCustomer._id);
+
+        return res.json({
+            _id: newCustomer._id,
+            userName: newCustomer.userName,
+            email: newCustomer.email,
+            phone: newCustomer.phone,
+            token, // שליחת הטוקן ללקוח
+        });
+
+    } catch (err) {
+        res.status(400).json({ title: "cannot create user", message: err.message });
     }
 }
 
