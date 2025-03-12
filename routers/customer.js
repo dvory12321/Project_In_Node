@@ -6,7 +6,7 @@ import {  updatePassword, getAllCustomers, getById, update ,login,signUp} from "
 
 const router = Router();
 
-router.get("/", checkManager ,getAllCustomers);
+router.get("/" ,getAllCustomers);
 router.get("/:id", getById);
 router.put("/:id",checkMiddleware, update);
 router.put("/:id/password",checkMiddleware,updatePassword)
