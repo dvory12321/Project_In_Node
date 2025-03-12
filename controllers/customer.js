@@ -128,7 +128,7 @@ export async function updatePassword(req, res) {
     let { body } = req;
     
     if (!mongoose.isValidObjectId(id))
-        return res.status(400).json({ "title": "invalid id", message: "id is not in correct format" });
+        return res.status(400).json({ "title": "invalid id", message: "**id is not in correct format" });
 
     if (!body.password || body.password.length < 6) {
         return res.status(400).json({ title: "invalid password", message: "Password is required and must be at least 6 characters long" });
@@ -191,10 +191,8 @@ export async function signUp(req, res) {
 
     try {
         // בדיקה אם המשתמש כבר קיים
-        const existingUser1 = await customerModel.findOne({ userName: body.userName });
-        const existingUser2 = await customerModel.findOne({ email: body.email });
-        const existingUser3 = await customerModel.findOne({ phone: body.phone });
-        if (existingUser1||existingUser2||existingUser3) {
+        const existingUser = await customerModel.findOne({ userName: body.userName });
+        if (existingUser) {
             return res.status(400).json({ title: "user exists", message: "User already exists" });
         }
 
