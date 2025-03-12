@@ -1,6 +1,6 @@
 import { Router } from "express";
 
-import {checkManager,checkMiddleware} from "../middlewares/check"
+import {checkManager,checkMiddleware} from "../middlewares/check.js"
 
 import {  updatePassword, getAllCustomers, getById, update ,login,signUp} from "../controllers/customer.js"
 
