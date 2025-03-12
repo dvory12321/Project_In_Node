@@ -2,6 +2,7 @@ import express from "express"
 import dotenv from "dotenv"
 import cors from 'cors'
 
+dotenv.config();
 import {connectToDB} from "./config/DB.js"
 import customerRouter from "./routers/customer.js"
 import productRouter from "./routers/product.js"
@@ -9,8 +10,6 @@ import orderRouter from "./routers/order.js"
 
 const app = express();
 connectToDB();
-dotenv.config();
-
 app.use(cors())
 app.use(express.json());
 
