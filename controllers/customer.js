@@ -167,14 +167,14 @@ export async function login(req, res) {
         }
 
         // יצירת טוקן
-        const token = generateToken(user._id);
+        // const token = generateToken(user._id);
 
         res.json({message:"התחברת בהצלחה!"},{
             _id: user._id,
             userName: user.userName,
             email: user.email,
             role: user.role,
-            token, // שליחת הטוקן ללקוח
+            // token, // שליחת הטוקן ללקוח
         });
 
     } catch (err) {
@@ -205,14 +205,14 @@ export async function signUp(req, res) {
         await newCustomer.save();
 
         // יצירת טוקן
-        const token = generateToken(newCustomer._id);
+        // const token = generateToken(newCustomer._id);
 
         return res.json({
             _id: newCustomer._id,
             userName: newCustomer.userName,
             email: newCustomer.email,
             phone: newCustomer.phone,
-            token, // שליחת הטוקן ללקוח
+            // token, // שליחת הטוקן ללקוח
         });
 
     } catch (err) {
