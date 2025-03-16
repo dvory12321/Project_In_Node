@@ -3,6 +3,8 @@ import dotenv from "dotenv"
 import cors from 'cors'
 
 dotenv.config();
+console.log("JWT_SECRET from env:", process.env.JWT_SECRET); // בדיקה אם המשתנה נטען נכון
+
 import {connectToDB} from "./config/DB.js"
 import customerRouter from "./routers/customer.js"
 import productRouter from "./routers/product.js"
