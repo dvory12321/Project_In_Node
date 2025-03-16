@@ -2,6 +2,7 @@ import mongoose from "mongoose";
 import bcrypt from "bcryptjs";
 import generateToken from "../generateToken.js";
 import { customerModel } from "../models/customer.js";
+import jwt from "jsonwebtoken";
 
 
 export async function getAllCustomers(req, res) {
@@ -168,6 +169,7 @@ export async function login(req, res) {
 
         // יצירת טוקן
         const token = generateToken(user._id);
+        console.log(token);
 
         res.json({
             _id: user._id,
@@ -206,13 +208,14 @@ export async function signUp(req, res) {
 
         // יצירת טוקן
          const token = generateToken(newCustomer._id);
-
+        console.log(token);
+        
         return res.json({
             _id: newCustomer._id,
             userName: newCustomer.userName,
             email: newCustomer.email,
             phone: newCustomer.phone,
-            // token, // שליחת הטוקן ללקוח
+             token, // שליחת הטוקן ללקוח
         });
 
     } catch (err) {
