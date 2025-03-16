@@ -31,6 +31,7 @@ export function checkManager(req, res, next) {
         const result = jwt.verify(token, process.env.JWT_SECRET);
         console.log(result);
         req.user = result;
+        console.log("🔍 נתוני המשתמש מהטוקן:", req.user);
         if (result.role === "admin") {
             return next(); 
         }
