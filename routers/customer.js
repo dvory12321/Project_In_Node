@@ -8,7 +8,7 @@ const router = Router();
 
 router.get("/" ,getAllCustomers);
 router.get("/:id", getById);
-router.put("/:id", update);
+router.put("/:id",checkMiddleware, update);
 router.put("/:id/password",checkMiddleware,updatePassword)
 router.post('/login', login);
 router.post("/", signUp);
