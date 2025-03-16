@@ -77,7 +77,7 @@ export async function update(req, res) {
 
     try {
         // ביצוע העדכון עם הנתונים המסוננים
-        let data = await customerModel.findByIdAndUpdate(id, updateData, { new: true });
+        let data = await customerModel.findByIdAndUpdate(id, updateData, { new: true }).select(-password);
 
         // אם לא נמצא לקוח עם ה-ID הנתון
         if (!data)
@@ -209,7 +209,7 @@ export async function signUp(req, res) {
         // יצירת טוקן
          const token = generateToken(newCustomer._id);
         console.log(token);
-        
+
         return res.json({
             _id: newCustomer._id,
             userName: newCustomer.userName,
