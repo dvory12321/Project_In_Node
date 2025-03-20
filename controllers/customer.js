@@ -156,6 +156,7 @@ export async function login(req, res) {
 
     try {
         const user = await customerModel.findOne({ userName });
+        console.log("user: " + user)
 
         if (!user) {
             return res.status(404).json({ title: "user not found", message: "No user with such username found" });
