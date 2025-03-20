@@ -23,6 +23,8 @@ export function checkManager(req, res, next) {
     let token = req.header("Authorization");
 
     if (!token || !token.startsWith("Bearer ")) {
+
+        {token && console.log(token)}
         return res.status(401).json({ message: "משתמש לא מזוהה, נא בצע כניסה" });
     }
 
