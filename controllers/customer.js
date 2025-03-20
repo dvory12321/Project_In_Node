@@ -178,7 +178,7 @@ export async function login(req, res) {
             userName: user.userName,
             email: user.email,
             role: user.role,
-             token, // שליחת הטוקן ללקוח
+            token, // שליחת הטוקן ללקוח
         });
 
     } catch (err) {
