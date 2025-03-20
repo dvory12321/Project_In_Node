@@ -24,6 +24,7 @@ export function checkManager(req, res, next) {
     let trying = req.header("try");
     console.log("try: " + trying);
 
+
     if (!token || !token.startsWith("Bearer ")) {
 
         {token && console.log(token)}
@@ -35,6 +36,7 @@ export function checkManager(req, res, next) {
         const result = jwt.verify(token, process.env.JWT_SECRET);
         console.log(result);
         req.user = result;
+        console.log("try: " + trying);
         console.log("🔍 נתוני המשתמש מהטוקן:", req.user);
         if (result.role === "admin") {
             return next(); 
