@@ -37,7 +37,7 @@ export function checkManager(req, res, next) {
         if (result.role === "admin") {
             return next(); 
         }
-
+        console.log("משתמש מסוג: " + result.role)
         return res.status(403).json({ message: "אינך מורשה לפעולה זו" });
     } catch (err) {
         console.log(err);
