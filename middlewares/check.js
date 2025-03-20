@@ -10,6 +10,7 @@ export function checkMiddleware (req, res, next){
     try {
         token = token.split(" ")[1]; 
         const result = jwt.verify(token, process.env.JWT_SECRET);
+        console.log("env:" + process.env.JWT_SECRET);
         console.log(result);
         req.user = result;
         next();
