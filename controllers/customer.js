@@ -149,6 +149,7 @@ export async function updatePassword(req, res) {
 
 export async function login(req, res) {
     const { userName, password } = req.body;
+    console.log("login!!!")
 
     if (!userName || !password) {
         return res.status(400).json({ title: "missing fields", message: "Username and password are required" });
