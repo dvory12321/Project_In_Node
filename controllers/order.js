@@ -86,6 +86,8 @@ export async function addOrder(req, res) {
         return res.status(400).json({title: "there are no products", message: "filed products is empty"})
     try {
         //מעדכנים בהזמנה לכל מוצר במערל המוצרים את השדה totalPrice  
+        
+        console.log(body);
         body = updateOrderWithTotalPrice(body);
         // totalPrice מכיל את סכום כל המוצרים 
         let totalPrice = calculateTotalOrderPrice(body);
