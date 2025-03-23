@@ -99,6 +99,8 @@ export async function addOrder(req, res) {
         let totalPrice = calculateTotalOrderPrice(body);
         let newOrder = new orderModel({
             ...body,
+            destDate: new Date(body.destDate),
+            cust_id: mongoose.Types.ObjectId(body.cust_id),
             date: new Date(),
             finallyPrice: (body.priceToShipment || 100) + totalPrice
         });
