@@ -87,10 +87,10 @@ export async function deleteById(req, res) {
 
 export async function update(req, res) {
     let { body } = req;
-    let { productName } = req.params;
+    let { id } = req.params;
 
-    // הדפסת שם המוצר שנשלח לבדיקת ערך תקין
-    console.log('Received productName:', productName);
+    // הדפסת ה-ID שנשלח לבדיקת ערך תקין
+    console.log('Received product ID:', id);
 
     // בדיקות שדות
     if (body.productName?.length <= 2)
@@ -105,18 +105,14 @@ export async function update(req, res) {
         return res.status(400).json({ title: "cannot update product", message: "size must be more than 3 characters" });
 
     try {
-        // חיפוש גמיש על שם המוצר (לא רגיש לאותיות גדולות/קטנות)
-        let product = await productModel.findOne({ 
-            productName: { 
-                $regex: new RegExp('^' + productName.trim().toLowerCase() + '$', 'i') 
-            } 
-        });
+        // חיפוש מוצר לפי ID
+        let product = await productModel.findById(id);
 
         if (!product)
-            return res.status(404).json({ title: "product not found", message: "No product found with this name" });
+            return res.status(404).json({ title: "product not found", message: "No product found with this ID" });
 
-        // עדכון המוצר
-        let updatedProduct = await productModel.findByIdAndUpdate(product._id, body, { new: true });
+        // עדכון המוצר לפי ID
+        let updatedProduct = await productModel.findByIdAndUpdate(id, body, { new: true });
 
         if (!updatedProduct)
             return res.status(404).json({ title: "cannot update product", message: "No product found to update" });
@@ -128,6 +124,7 @@ export async function update(req, res) {
         res.status(400).json({ title: "cannot update product", message: err.message });
     }
 }
+
 
 
 
