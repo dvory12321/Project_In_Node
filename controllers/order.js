@@ -72,9 +72,11 @@ function updateOrderWithTotalPrice(order) {
 // פונקציה שמחזירה את הסכום לתשלום עבור כל ההזמנות
 function calculateTotalOrderPrice(order) {
     return order.products.reduce((total, product) => {
-        return total + product.totalPrice;
+        const price = Number(product.totalPrice);
+        return total + (isNaN(price) ? 0 : price);
     }, 0);
 }
+
 
 export async function addOrder(req, res) {
     let { body } = req;
