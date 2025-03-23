@@ -38,12 +38,12 @@ export function checkManager(req, res, next) {
         console.log(result);
         req.user = result;
         console.log("try: " + trying);
-        console.log("🔍 נתוני המשתמש מהטוקן:", req.user);
+        console.log("נתוני המשתמש מהטוקן:", req.user);
         if (result.role === "admin") {
             return next(); 
         }
         console.log("משתמש מסוג: " + result.role)
-        return res.status(403).json({ message: "אינך מורשה לפעולה זו" });
+        return res.status(403).json({ message: " אינך מורשה לפעולה זו"+result.role });
     } catch (err) {
         console.log(err);
         res.status(401).json({ message: "משתמש לא מזוהה" });
