@@ -82,8 +82,6 @@ function calculateTotalOrderPrice(order) {
 }
 
 
-
-
 export async function addOrder(req, res) {
     let { body } = req;
     if (!body.destDate || !body.address || !body.cust_id || !body.products)
@@ -104,7 +102,7 @@ export async function addOrder(req, res) {
         body = updateOrderWithTotalPrice(body);
         
         // ודא ש-totalPrice תקין
-        if (isNaN(body.totalPrice)) {
+        if (body.products.some(product => isNaN(product.totalPrice))) {
             return res.status(400).json({ title: "cannot add order", message: "totalPrice is not a valid number" });
         }
 
