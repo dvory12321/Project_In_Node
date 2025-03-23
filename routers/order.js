@@ -9,6 +9,6 @@ router.get("/", getAllOrders);
 router.get("/:id", getAllOrdersByCustId);
 router.delete("/:id", deleteById);
 router.put("/:id", perform);
-router.post("/",checkMiddleware, addOrder);
+router.post("/", addOrder);
 
 export default router;
