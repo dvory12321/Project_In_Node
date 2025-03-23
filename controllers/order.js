@@ -61,31 +61,12 @@ export async function perform(req, res) { // עדכון הזמנה להזמנה 
     }
 }
 
-// פונקציה שמקבלת הזמנה ומעדכנת לה את שדה totalPrice לפי price וamount
-function updateOrderWithTotalPrice(order) {
-    order.products.forEach(product => {
-        product.totalPrice = product.price * product.amount;
-    });
-    return order;
-}
-
-// פונקציה שמחזירה את הסכום לתשלום עבור כל ההזמנות
-function calculateTotalOrderPrice(order) {
-    if (!Array.isArray(order.products)) {
-        throw new Error("products should be an array");
-    }
-    
-    return order.products.reduce((total, product) => {
-        const price = Number(product.totalPrice);
-        return total + (isNaN(price) ? 0 : price);
-    }, 0);
-}
-
-
 export async function addOrder(req, res) {
     let { body } = req;
-    if (!body.destDate || !body.address || !body.cust_id || !body.products)
-        return res.status(400).json({ title: "missing required fields", message: "destDate, address, cust_id and products are required" });
+    // body מכיל את הערכים של מודל הזמנה
+    if (!body.destDate || !body.address || !body.cust_id || !body.products || !body.priceToShipment || !body.finallyPrice)
+        return res.status(400).json({ 
+    title: "missing required fields", message: "destDate, address, cust_id, product, priceToShipment, finallyPrice and products are required" });
     if (body.address?.length <= 2)
         return res.status(400).json({ title: "cannot add order", message: "address is too short" });
     if (body.products?.length < 1)
@@ -97,22 +78,12 @@ export async function addOrder(req, res) {
         if (isNaN(destDate.getTime())) {
             return res.status(400).json({ title: "cannot add order", message: "destDate is not a valid date" });
         }
-
-        // מעדכנים בהזמנה לכל מוצר במערך המוצרים את השדה totalPrice  
-        body = updateOrderWithTotalPrice(body);
-        
-        // ודא ש-totalPrice תקין
-        if (body.products.some(product => isNaN(product.totalPrice))) {
-            return res.status(400).json({ title: "cannot add order", message: "totalPrice is not a valid number" });
-        }
-
-        let totalPrice = calculateTotalOrderPrice(body);
         let newOrder = new orderModel({
             ...body,
             destDate: destDate,
             cust_id: new mongoose.Types.ObjectId(body.cust_id), // השתמש ב-new
             date: new Date(),
-            finallyPrice: (body.priceToShipment || 100) + totalPrice
+            finallyPrice: (body.priceToShipment || 100) + body.finallyPrice
         });
         
         let data = await newOrder.save();
