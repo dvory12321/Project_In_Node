@@ -89,7 +89,6 @@ export async function addOrder(req, res) {
     try {
         //מעדכנים בהזמנה לכל מוצר במערל המוצרים את השדה totalPrice  
         
-        console.log(body);
         body = updateOrderWithTotalPrice(body);
         // totalPrice מכיל את סכום כל המוצרים 
         let totalPrice = calculateTotalOrderPrice(body);
@@ -98,6 +97,8 @@ export async function addOrder(req, res) {
             date: new Date(),
             finallyPrice: (body.priceToShipment || 100) + totalPrice
         });
+        console.log("newOrder: "+ newOrder);
+        
         let data = await newOrder.save();
 
         res.json(data)
