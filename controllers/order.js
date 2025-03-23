@@ -66,7 +66,7 @@ export async function addOrder(req, res) {
     // body מכיל את הערכים של מודל הזמנה
     if (!body.destDate || !body.address || !body.cust_id || !body.products || !body.finallyPrice)
         return res.status(400).json({ 
-    title: "missing required fields", message: "destDate, address, cust_id, product, finallyPrice and products are required" });
+    title: "missing required fields", message: "destDate, address, cust_id, finallyPrice and products are required" });
     if (body.address?.length <= 2)
         return res.status(400).json({ title: "cannot add order", message: "address is too short" });
     if (body.products?.length < 1)
