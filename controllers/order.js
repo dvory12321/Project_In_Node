@@ -71,10 +71,17 @@ function updateOrderWithTotalPrice(order) {
 
 // פונקציה שמחזירה את הסכום לתשלום עבור כל ההזמנות
 function calculateTotalOrderPrice(order) {
+    if (!Array.isArray(order.products)) {
+        throw new Error("products should be an array");
+    }
+    
     return order.products.reduce((total, product) => {
-        return total + product.totalPrice;
+        const price = Number(product.totalPrice);
+        return total + (isNaN(price) ? 0 : price);
     }, 0);
 }
+
+
 
 export async function addOrder(req, res) {
     let { body } = req;
@@ -87,7 +94,6 @@ export async function addOrder(req, res) {
     try {
         //מעדכנים בהזמנה לכל מוצר במערל המוצרים את השדה totalPrice  
         
-        console.log(body);
         body = updateOrderWithTotalPrice(body);
         // totalPrice מכיל את סכום כל המוצרים 
         let totalPrice = calculateTotalOrderPrice(body);
@@ -96,6 +102,8 @@ export async function addOrder(req, res) {
             date: new Date(),
             finallyPrice: (body.priceToShipment || 100) + totalPrice
         });
+        console.log("newOrder: "+ newOrder);
+        
         let data = await newOrder.save();
 
         res.json(data)
