@@ -83,34 +83,45 @@ function calculateTotalOrderPrice(order) {
 
 
 
+
 export async function addOrder(req, res) {
     let { body } = req;
     if (!body.destDate || !body.address || !body.cust_id || !body.products)
-        return res.status(400).json({ title: "missing required fields", message: "destDate, address, cust_id and products are required" })
+        return res.status(400).json({ title: "missing required fields", message: "destDate, address, cust_id and products are required" });
     if (body.address?.length <= 2)
-        return res.status(400).json({ title: "cannot add order", message: "address is too short" })
-    if(body.products?.length < 1)
-        return res.status(400).json({title: "there are no products", message: "filed products is empty"})
+        return res.status(400).json({ title: "cannot add order", message: "address is too short" });
+    if (body.products?.length < 1)
+        return res.status(400).json({ title: "there are no products", message: "field products is empty" });
+
     try {
-        //מעדכנים בהזמנה לכל מוצר במערל המוצרים את השדה totalPrice  
-        
+        // בדוק אם destDate הוא תאריך תקני
+        const destDate = new Date(body.destDate);
+        if (isNaN(destDate.getTime())) {
+            return res.status(400).json({ title: "cannot add order", message: "destDate is not a valid date" });
+        }
+
+        // מעדכנים בהזמנה לכל מוצר במערך המוצרים את השדה totalPrice  
         body = updateOrderWithTotalPrice(body);
-        // totalPrice מכיל את סכום כל המוצרים 
+        
+        // ודא ש-totalPrice תקין
+        if (isNaN(body.totalPrice)) {
+            return res.status(400).json({ title: "cannot add order", message: "totalPrice is not a valid number" });
+        }
+
         let totalPrice = calculateTotalOrderPrice(body);
         let newOrder = new orderModel({
             ...body,
-            destDate: new Date(body.destDate),
-            cust_id: new mongoose.Types.ObjectId(body.cust_id),
+            destDate: destDate,
+            cust_id: new mongoose.Types.ObjectId(body.cust_id), // השתמש ב-new
             date: new Date(),
             finallyPrice: (body.priceToShipment || 100) + totalPrice
         });
-        console.log("newOrder: "+ newOrder);
         
         let data = await newOrder.save();
 
-        res.json(data)
+        res.json(data);
     }
     catch (err) {
-        res.status(400).json({ title: "cannot add order", message: err.message })
+        res.status(400).json({ title: "cannot add order", message: err.message });
     }
 }
