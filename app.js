@@ -22,14 +22,7 @@ app.use("/api/products", productRouter)
 app.use("/api/customers", customerRouter)
 app.use("/api/orders", orderRouter)
 
-const port = process.env.PORT || 10000;
-app.listen(port, "0.0.0.0", ()=>{
-    console.log("app is running in port " + port)
-})
-
-
-    // טוקן ודוגמת מפתח
-    const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE3NDI4MTIzODEsImV4cCI6MTc0MjgxNTk4MX0.MKWLF641QwH5Z7_r2rGsNK1_T_rLxAC-phAEDFCKoi8";
+const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE3NDI4MTIzODEsImV4cCI6MTc0MjgxNTk4MX0.MKWLF641QwH5Z7_r2rGsNK1_T_rLxAC-phAEDFCKoi8";
     const secretKey = "s1Ku36PCrmaPz5peM4MnhRTeK6FGC5eno1DcZ";
 
     try {
@@ -38,4 +31,13 @@ app.listen(port, "0.0.0.0", ()=>{
     } catch (err) {
         console.error("פענוח הטוקן נכשל:", err);
     }
+
+const port = process.env.PORT || 10000;
+app.listen(port, "0.0.0.0", ()=>{
+    console.log("app is running in port " + port)
+})
+
+
+    // טוקן ודוגמת מפתח
+    
 
