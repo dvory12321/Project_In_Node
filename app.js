@@ -22,7 +22,7 @@ app.use("/api/products", productRouter)
 app.use("/api/customers", customerRouter)
 app.use("/api/orders", orderRouter)
 
-const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE3NDI4MTIzODEsImV4cCI6MTc0MjgxNTk4MX0.MKWLF641QwH5Z7_r2rGsNK1_T_rL";
+const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyTmFtZSI6IteR16jXm9eZIiwicm9sZSI6ImFkbWluIiwiaWF0IjoxNzQyOTI1NDk1LCJleHAiOjE3NDI5MjkwOTV9.cRzJw2cc6W90ORMJgiGBC6U4wVEx4opwcI8Hk3W3Z34";
     const secretKey = process.env.JWT_SECRET;
 
     try {
