@@ -21,8 +21,8 @@ export function checkMiddleware (req, res, next){
 };
 
 export function checkManager(req, res, next) {
-    let token = req.headers("Authorization");
-    let trying = req.headers("try");
+    let token = req.header("Authorization");
+    let trying = req.header("try");
     console.log("try: " + trying);
 
 
