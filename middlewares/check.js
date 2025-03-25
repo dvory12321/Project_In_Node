@@ -23,6 +23,7 @@ export function checkMiddleware (req, res, next){
 export function checkManager(req, res, next) {
     let token = req.headers.Authorization;
     console.log("token: " + token);
+    console.log("all headers: " , req.headers);
 
 
 
