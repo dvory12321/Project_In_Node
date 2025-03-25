@@ -170,7 +170,7 @@ export async function login(req, res) {
         }
 
         // יצירת טוקן
-        const token = generateToken(user._id);
+        const token = generateToken(user);
         console.log(token);
 
         res.json({
