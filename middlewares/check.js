@@ -24,6 +24,8 @@ export function checkManager(req, res, next) {
     let token = req.headers.Authorization;
     let trying = req.headers["try"];
     console.log("try: " + trying);
+    console.log("token: " + token);
+    
 
 
     if (!token || !token.startsWith("Bearer ")) {
