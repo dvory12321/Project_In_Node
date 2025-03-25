@@ -21,14 +21,13 @@ export function checkMiddleware (req, res, next){
 };
 
 export function checkManager(req, res, next) {
-    let token = req.headers.Authorization;
+    let token = req.headers["authorization"];
     console.log("token: " + token);
     console.log("all headers: " , req.headers);
 
 
 
     if (!token || !token.startsWith("Bearer ")) {
-
         {token && console.log(token)}
         return res.status(401).json({ message: "משתמש לא מזוהה, נא בצע כניסה" });
     }
