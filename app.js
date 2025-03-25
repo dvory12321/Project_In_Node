@@ -27,7 +27,7 @@ const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyTmFtZSI6IteR16jXm9eZ
 
     try {
         const decoded = jwt.verify(token, secretKey);
-        console.log("token: " + decoded);
+        console.log("decoded: " , decoded);
     } catch (err) {
         console.error("פענוח הטוקן נכשל:", err);
     }
