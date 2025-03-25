@@ -8,7 +8,7 @@ const router = Router();
 router.get("/", getAllProducts);
 router.get("/:id", getById);
 router.delete("/:id",checkManager, deleteById);
-router.put("/:productName",checkManager, update);
+router.put("/:id",checkManager, update);
 router.post("/",checkManager, add);
 // router.post("/", add);
 

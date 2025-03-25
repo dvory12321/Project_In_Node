@@ -88,7 +88,6 @@ export async function deleteById(req, res) {
 export async function update(req, res) {
     let { body } = req;
     let { id } = req.params;
-    id = new mongoose.Types.ObjectId(id);
 
     // הדפסת ה-ID שנשלח לבדיקת ערך תקין
     console.log('Received product ID:', id);
