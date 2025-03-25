@@ -9,8 +9,8 @@ router.get("/", getAllProducts);
 router.get("/:id", getById);
 router.delete("/:id",checkManager, deleteById);
 router.put("/:productName",checkManager, update);
-// router.post("/",checkManager, add);
-router.post("/", add);
+router.post("/",checkManager, add);
+// router.post("/", add);
 
 router.get("/category/:category", getCategory);
 
