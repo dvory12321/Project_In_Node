@@ -33,7 +33,9 @@ export function checkManager(req, res, next) {
     }
 
     try {
-        token = token.split(" ")[1]; 
+        token = token.split(" ")[1];
+        console.log("token before: " + token);
+         
         const result = jwt.verify(token, process.env.JWT_SECRET);
         console.log("token after: " + result);
         req.user = result;
