@@ -1,7 +1,7 @@
 import jwt from "jsonwebtoken";
 
 export function checkMiddleware (req, res, next){
-    let token = req.headers["Authorization"];
+    let token = req.headers["authorization"];
 
     if (!token || !token.startsWith("Bearer ")) {
         return res.status(401).json({ message: "משתמש לא מזוהה, נא בצע כניסה" });
@@ -22,10 +22,6 @@ export function checkMiddleware (req, res, next){
 
 export function checkManager(req, res, next) {
     let token = req.headers["authorization"];
-    console.log("token: " + token);
-    console.log("all headers: " , req.headers);
-
-
 
     if (!token || !token.startsWith("Bearer ")) {
         {token && console.log(token)}
@@ -33,17 +29,13 @@ export function checkManager(req, res, next) {
     }
 
     try {
-        token = token.split(" ")[1];
-        console.log("token before: " + token);
-         
+        token = token.split(" ")[1];         
         const result = jwt.verify(token, process.env.JWT_SECRET);
-        console.log("token after: " + result);
         req.user = result;
         console.log("נתוני המשתמש מהטוקן:", req.user);
         if (result.role === "admin") {
             return next(); 
         }
-        console.log("משתמש מסוג: " + result.role)
         return res.status(403).json({ message: " אינך מורשה לפעולה זו"+result.role });
     } catch (err) {
         console.log(err);
