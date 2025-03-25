@@ -1,7 +1,7 @@
 import jwt from "jsonwebtoken";
 
 export function checkMiddleware (req, res, next){
-    let token = req.header("Authorization");
+    let token = req.headers["Authorization"];
 
     if (!token || !token.startsWith("Bearer ")) {
         return res.status(401).json({ message: "משתמש לא מזוהה, נא בצע כניסה" });
