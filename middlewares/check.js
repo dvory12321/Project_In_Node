@@ -35,7 +35,7 @@ export function checkManager(req, res, next) {
     try {
         token = token.split(" ")[1]; 
         const result = jwt.verify(token, process.env.JWT_SECRET);
-        console.log(result);
+        console.log("token after: " + result);
         req.user = result;
         console.log("try: " + trying);
         console.log("נתוני המשתמש מהטוקן:", req.user);
