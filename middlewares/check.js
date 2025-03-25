@@ -22,10 +22,8 @@ export function checkMiddleware (req, res, next){
 
 export function checkManager(req, res, next) {
     let token = req.headers.Authorization;
-    let trying = req.headers.try;
-    console.log("try: " + trying);
     console.log("token: " + token);
-    
+
 
 
     if (!token || !token.startsWith("Bearer ")) {
@@ -41,7 +39,6 @@ export function checkManager(req, res, next) {
         const result = jwt.verify(token, process.env.JWT_SECRET);
         console.log("token after: " + result);
         req.user = result;
-        console.log("try: " + trying);
         console.log("נתוני המשתמש מהטוקן:", req.user);
         if (result.role === "admin") {
             return next(); 
